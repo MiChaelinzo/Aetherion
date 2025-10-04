@@ -110,7 +110,7 @@
 
 ## 📄 License
 
-MIT License – see [LICENSE](LICENSE)
+GNU Affero General Public License v3.0 – see [LICENSE](LICENSE)
 
 ## 📢 Support & Community
 
