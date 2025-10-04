@@ -1,5 +1,3 @@
-Here’s a **robust README** template for your Interstellar Object Tracking System (“Interstellar Watch”) with clear setup, features, technical details, and contribution guidelines:
-
 ***
 
 # Interstellar Watch – README
@@ -120,8 +118,3 @@ MIT License – see [LICENSE](LICENSE)
 - Join our [Community Forum](#)
 - Issues/Bugs: submit via GitHub
 
-***
-
-Feel free to modify or extend each section with specific details about your app’s configuration, data models, contribution guidelines, or demo information!
-
-[1](https://bolt.new/~/sb1-ots96p7j)
