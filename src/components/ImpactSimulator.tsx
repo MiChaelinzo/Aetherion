@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calculator, AlertTriangle, Target, Zap, Users, Building2, TrendingDown } from 'lucide-react';
+import { ImpactZoneVisualization } from './ImpactZoneVisualization';
 
 export function ImpactSimulator() {
   const [diameter, setDiameter] = useState(100);
@@ -72,8 +73,8 @@ export function ImpactSimulator() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="space-y-6 lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Target className="w-6 h-6 text-red-600" />
@@ -199,7 +200,9 @@ export function ImpactSimulator() {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 lg:col-span-2">
+            <ImpactZoneVisualization results={results} />
+
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Zap className="w-6 h-6 text-orange-600" />

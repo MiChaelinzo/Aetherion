@@ -1,6 +1,6 @@
-# Interstellar Watch 🌌☄️
+# Interstellar Watch
 
-## 2025 NASA Space Apps Challenge Submission 🚀🧑🏻‍🚀
+## 2025 NASA Space Apps Challenge Submission
 
 A comprehensive web platform for tracking, analyzing, and simulating interstellar objects and near-Earth asteroids, developed for the NASA Space Apps Challenge.
 
@@ -75,7 +75,7 @@ Interstellar Watch is an interactive visualization and simulation tool that enab
    - Future research initiatives
    - Comprehensive glossary
 
-## Technical Stack ⚙️
+## Technical Stack
 
 - **Frontend:** React 18 with TypeScript
 - **Styling:** Tailwind CSS
@@ -84,7 +84,7 @@ Interstellar Watch is an interactive visualization and simulation tool that enab
 - **Build Tool:** Vite
 - **Visualization:** Canvas API for 3D rendering
 
-## Database Schema 👨🏻‍💻
+## Database Schema
 
 ### Interstellar Objects
 - Complete orbital and physical parameters
@@ -92,13 +92,13 @@ Interstellar Watch is an interactive visualization and simulation tool that enab
 - Scientific findings
 - Threat assessment data
 
-### News Articles 📰
+### News Articles
 - Article content and metadata
 - Category and tag system
 - View tracking
 - Related object links
 
-### Community 
+### Community
 - Discussion posts
 - Comments
 - User attribution
@@ -192,6 +192,9 @@ This project is designed to integrate with:
 
 Please see [SECURITY.md](SECURITY.md) for our security policy and vulnerability reporting procedures.
 
+## Challenge Information
+
+For detailed information about the NASA Space Apps Challenge requirements and objectives, see [.bolt/challenge-info.md](.bolt/challenge-info.md).
 
 ## Disclaimer
 

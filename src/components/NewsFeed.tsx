@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Newspaper, Clock, User, Tag, TrendingUp, Eye, ExternalLink } from 'lucide-react';
+import { Newspaper, Clock, User, Tag, TrendingUp, Eye, ExternalLink, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface NewsArticle {
@@ -10,7 +10,7 @@ interface NewsArticle {
   category: string;
   source: string;
   author: string;
-  image_url: string | null;
+  image_url?: string | null;
   published_date: string;
   tags: string[];
   views: number;
@@ -21,13 +21,56 @@ export function NewsFeed() {
   const [loading, setLoading] = useState(true);
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [filterCategory, setFilterCategory] = useState('all');
+  const [liveUpdating, setLiveUpdating] = useState(false);
 
   useEffect(() => {
     fetchArticles();
+    const interval = setInterval(fetchLiveNews, 30000); // Update every 30 seconds
+    return () => clearInterval(interval);
   }, []);
+
+  const fetchLiveNews = async () => {
+    try {
+      setLiveUpdating(true);
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      const response = await fetch(
+        `${supabaseUrl}/functions/v1/fetch-space-news`,
+        {
+          headers: {
+            'Authorization': `Bearer ${anonKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.articles && data.articles.length > 0) {
+          // Combine live news with existing articles, removing duplicates
+          const liveArticles = data.articles as NewsArticle[];
+          setArticles(prev => {
+            const combined = [...liveArticles, ...prev];
+            const unique = Array.from(
+              new Map(combined.map(item => [item.title.toLowerCase().slice(0, 30), item])).values()
+            );
+            return unique.sort((a, b) =>
+              new Date(b.published_date).getTime() - new Date(a.published_date).getTime()
+            );
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching live news:', error);
+    } finally {
+      setLiveUpdating(false);
+    }
+  };
 
   const fetchArticles = async () => {
     try {
+      // First fetch from database
       const { data, error } = await supabase
         .from('news_articles')
         .select('*')
@@ -35,6 +78,9 @@ export function NewsFeed() {
 
       if (error) throw error;
       setArticles(data || []);
+
+      // Then fetch live news
+      await fetchLiveNews();
     } catch (error) {
       console.error('Error fetching articles:', error);
     } finally {
@@ -84,14 +130,23 @@ export function NewsFeed() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-      <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-900 text-white py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-4 mb-4">
-            <Newspaper className="w-12 h-12" />
-            <h1 className="text-5xl font-bold">Interstellar News</h1>
+      <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-900 text-white py-16 px-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500 opacity-10 rounded-full blur-3xl"></div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <Newspaper className="w-12 h-12" />
+              <h1 className="text-5xl font-bold">Interstellar News</h1>
+            </div>
+            {liveUpdating && (
+              <div className="flex items-center gap-2 bg-white bg-opacity-20 backdrop-blur-lg px-4 py-2 rounded-full">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium">Live Updates</span>
+              </div>
+            )}
           </div>
           <p className="text-xl text-blue-100">
-            Stay updated with the latest discoveries, research, and missions related to interstellar objects
+            Stay updated with the latest discoveries, research, and missions related to interstellar objects and space exploration
           </p>
         </div>
       </div>
